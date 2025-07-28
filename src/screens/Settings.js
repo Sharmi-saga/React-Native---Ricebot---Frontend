@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -9,10 +9,25 @@ import {
   Image,
   ScrollView,
 } from 'react-native';
-
+import mqttService from '../services/mqttService'; // Make sure the path is correct
 const Settings = ({ navigation }) => {
   const [serialNumber, setSerialNumber] = useState('');
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [mqttStatus, setMqttStatus] = useState(mqttService.getStatus());
+
+  useEffect(() => {
+    const client = mqttService.connectMQTT(); // Initiate connection if needed
+
+    const handleStatusChange = (status) => {
+      setMqttStatus(status);
+    };
+
+    mqttService.onStatusChange(handleStatusChange);
+
+    return () => {
+      mqttService.offStatusChange(handleStatusChange);
+    };
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -48,21 +63,31 @@ const Settings = ({ navigation }) => {
           <Text style={styles.title}>Settings</Text>
         </View>
 
-        <View style={styles.connectionSection}>
-          <Text style={styles.connectionText}>
-            My Home: <Text style={styles.connectedText}>Connected*</Text>
+        <Text style={styles.connectionText}>MQTT Connection Status:</Text>
+        <View style={styles.connectionStatusContainer}>
+          <Text
+            style={[
+              styles.connectionStatus,
+              mqttStatus === 'Connected'
+                ? styles.connected
+                : mqttStatus === 'Connecting' || mqttStatus === 'Reconnecting'
+                ? styles.connecting
+                : styles.disconnected,
+            ]}
+          >
+            {mqttStatus}
           </Text>
-          <View style={styles.serialInputContainer}>
-            <TextInput
-              style={styles.serialInput}
-              placeholder="Serial-number"
-              value={serialNumber}
-              onChangeText={setSerialNumber}
-            />
-            <TouchableOpacity style={styles.connectButton}>
-              <Text style={styles.connectButtonText}>Connect</Text>
-            </TouchableOpacity>
-          </View>
+
+          <View
+            style={[
+              styles.circle,
+              mqttStatus === 'Connected'
+                ? styles.connectedCircle
+                : mqttStatus === 'Connecting' || mqttStatus === 'Reconnecting'
+                ? styles.connectingCircle
+                : styles.disconnectedCircle,
+            ]}
+          />
         </View>
 
         <View style={styles.riceCookerContainer}>
@@ -72,25 +97,6 @@ const Settings = ({ navigation }) => {
             resizeMode="contain"
           />
         </View>
-
-        {/* <View style={styles.modeToggleContainer}>
-          <TouchableOpacity 
-            style={[styles.modeButton, !isDarkMode && styles.activeMode]}
-            onPress={() => setIsDarkMode(false)}
-          >
-            <Text style={[styles.modeButtonText, !isDarkMode && styles.activeModeText]}>
-              Light Mode
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity 
-            style={[styles.modeButton, isDarkMode && styles.activeMode]}
-            onPress={() => setIsDarkMode(true)}
-          >
-            <Text style={[styles.modeButtonText, isDarkMode && styles.activeModeText]}>
-              Dark Mode
-            </Text>
-          </TouchableOpacity>
-        </View> */}
 
         <TouchableOpacity 
           style={styles.profileButton}
@@ -104,26 +110,12 @@ const Settings = ({ navigation }) => {
           <Text style={styles.arrowIcon}>→</Text>
         </TouchableOpacity>
       </ScrollView>
-      {/* <View style={styles.footer}>
-        <TouchableOpacity onPress={() => navigation.navigate('TermsOfService')}>
-          <Text style={styles.footerText}>Term of Service</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('PrivacyPolicy')}>
-          <Text style={styles.footerText}>Privacy policy</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('ContactUs')}>
-          <Text style={styles.footerText}>Contact Us</Text>
-        </TouchableOpacity>
-      </View> */}
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FFFFFF',
-  },
+  container: { flex: 1, backgroundColor: '#FFFFFF' },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -131,10 +123,7 @@ const styles = StyleSheet.create({
     padding: 15,
     backgroundColor: '#178ea3',
   },
-  logo: {
-    width: 50,
-    height: 50,
-  },
+  logo: { width: 50, height: 50 },
   searchContainer: {
     flex: 1,
     flexDirection: 'row',
@@ -157,15 +146,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     padding: 0,
   },
-  menuIcon: {
-    width: 24,
-    height: 24,
-    tintColor: '#FFFFFF',
-  },
-  content: {
-    flex: 1,
-    padding: 20,
-  },
+  menuIcon: { width: 24, height: 24, tintColor: '#FFFFFF' },
+  content: { flex: 1, padding: 20 },
   titleContainer: {
     backgroundColor: '#178ea3',
     padding: 15,
@@ -180,38 +162,42 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: '600',
   },
-  connectionSection: {
-    marginBottom: 30,
-  },
   connectionText: {
     fontSize: 16,
     marginBottom: 10,
   },
-  connectedText: {
-    color: '#4CAF50',
-  },
-  serialInputContainer: {
+  connectionStatusContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginBottom: 20,
   },
-  serialInput: {
-    flex: 1,
-    height: 44,
-    borderWidth: 1,
-    borderColor: '#E0E0E0',
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    marginRight: 10,
-  },
-  connectButton: {
-    backgroundColor: '#178ea3',
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    borderRadius: 8,
-  },
-  connectButtonText: {
-    color: '#FFFFFF',
+  connectionStatus: {
+    fontSize: 16,
     fontWeight: '600',
+  },
+  connected: { color: '#4CAF50' },
+  connecting: { color: '#FFC107' },
+  disconnected: { color: '#F44336' },
+  connectedCircle: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    backgroundColor: '#4CAF50',
+    marginLeft: 8,
+  },
+  connectingCircle: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    backgroundColor: '#FFC107',
+    marginLeft: 8,
+  },
+  disconnectedCircle: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    backgroundColor: '#F44336',
+    marginLeft: 8,
   },
   riceCookerContainer: {
     alignItems: 'center',
@@ -221,37 +207,13 @@ const styles = StyleSheet.create({
     width: 300,
     height: 320,
   },
-  modeToggleContainer: {
-    flexDirection: 'row',
-    backgroundColor: '#F5F5F5',
-    borderRadius: 25,
-    padding: 4,
-    marginBottom: 40,
-  },
-  modeButton: {
-    flex: 1,
-    paddingVertical: 10,
-    alignItems: 'center',
-    borderRadius: 20,
-  },
-  activeMode: {
-    backgroundColor: '#000000',
-  },
-  modeButtonText: {
-    fontSize: 16,
-    color: '#666666',
-  },
-  activeModeText: {
-    color: '#FFFFFF',
-  },
   profileButton: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#178ea3',
     padding: 16,
     borderRadius: 25,
-    marginBottom:50
-    
+    marginBottom: 50,
   },
   profileIcon: {
     width: 24,
@@ -269,45 +231,6 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 20,
   },
-  searchContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    borderRadius: 20,
-    marginHorizontal: 10,
-    paddingHorizontal: 10,
-    height: 40,
-  },
-  searchIcon: {
-    width: 20,
-    height: 20,
-    tintColor: '#FFFFFF',
-    marginRight: 5,
-  },
-  searchInput: {
-    flex: 1,
-    color: '#FFFFFF',
-    fontSize: 16,
-    padding: 0,
-  },
-  menuIcon: {
-    width: 24,
-    height: 24,
-    tintColor: '#FFFFFF',
-  },
-//   footer: {
-//     flexDirection: 'row',
-//     justifyContent: 'space-around',
-//     padding: 20,
-//     backgroundColor: '#096171',
-//     borderTopLeftRadius: 16,
-//     borderTopRightRadius: 16,
-//   },
-//   footerText: {
-//     color: '#FFFFFF',
-//     fontSize: 14,
-//   },
 });
 
 export default Settings;
