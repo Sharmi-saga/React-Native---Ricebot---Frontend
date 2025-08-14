@@ -1,4 +1,4 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+This is a new [**React Native**](https://reactnative.dev) project
 
 # Getting Started
 
@@ -87,6 +87,8 @@ You've successfully run and modified your React Native App. :partying_face:
 If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
 
 # Learn More
+![Profile Screen](./assets/Screenshots/profile%20page.png)
+
 
 To learn more about React Native, take a look at the following resources:
 
