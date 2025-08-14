@@ -1,18 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
   StyleSheet,
-  TextInput,
   TouchableOpacity,
   SafeAreaView,
   Image,
-  ScrollView,
+  Alert,
+  Switch,
 } from 'react-native';
+import useMqtt from '../hooks/useMqtt';
 
 const Settings = ({ navigation }) => {
-  const [serialNumber, setSerialNumber] = useState('');
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [notificationsEnabled, setNotificationsEnabled] = useState(true);
+  const [darkModeEnabled, setDarkModeEnabled] = useState(false);
+  const [autoConnect, setAutoConnect] = useState(true);
+  
+  const { 
+    isConnected, 
+    connectionConfig
+  } = useMqtt();
+
+
+
+  const getConnectionTypeColor = () => {
+    if (isConnected) {
+      return '#2196F3'; // WebSocket blue
+    }
+    return '#F44336';
+  };
+
+  const getConnectionTypeText = () => {
+    const status = isConnected ? 'Connected' : 'Disconnected';
+    return `WEBSOCKET (${status})`;
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -22,18 +43,7 @@ const Settings = ({ navigation }) => {
           style={styles.logo}
           resizeMode="contain"
         />
-        <View style={styles.searchContainer}>
-          <Image
-            source={require('../assets/search.png')}
-            style={styles.searchIcon}
-            resizeMode="contain"
-          />
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Search..."
-            placeholderTextColor="#FFFFFF"
-          />
-        </View>
+        <Text style={styles.headerTitle}>Settings</Text>
         <TouchableOpacity style={styles.menuButton}>
           <Image 
             source={require('../assets/menu.png')}
@@ -43,68 +53,109 @@ const Settings = ({ navigation }) => {
         </TouchableOpacity>
       </View>
 
-      <ScrollView style={styles.content}>
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>Settings</Text>
-        </View>
+      <View style={styles.content}>
+        {/* MQTT Connection Settings */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>MQTT Connection</Text>
+          
+          <View style={styles.settingItem}>
+            <View style={styles.settingInfo}>
+              <Text style={styles.settingLabel}>Connection Type</Text>
+              <Text style={[styles.settingValue, { color: getConnectionTypeColor() }]}>
+                {getConnectionTypeText()}
+              </Text>
+            </View>
+          </View>
 
-        <View style={styles.connectionSection}>
-          <Text style={styles.connectionText}>
-            My Home: <Text style={styles.connectedText}>Connected*</Text>
-          </Text>
-          <View style={styles.serialInputContainer}>
-            <TextInput
-              style={styles.serialInput}
-              placeholder="Serial-number"
-              value={serialNumber}
-              onChangeText={setSerialNumber}
-            />
-            <TouchableOpacity style={styles.connectButton}>
-              <Text style={styles.connectButtonText}>Connect</Text>
-            </TouchableOpacity>
+          <View style={styles.settingItem}>
+            <View style={styles.settingInfo}>
+              <Text style={styles.settingLabel}>Connection Details</Text>
+              <Text style={styles.settingValue}>
+                {connectionConfig?.host || 'Unknown'}:{connectionConfig?.port || 'Unknown'} ({connectionConfig?.protocol || 'Unknown'})
+              </Text>
+            </View>
+          </View>
+
+          <View style={styles.connectionInfo}>
+            <Text style={styles.connectionInfoText}>
+              <Text style={styles.bold}>WebSocket:</Text> MQTT over WebSocket protocol (Port 8000)
+            </Text>
+            <Text style={styles.connectionInfoText}>
+              Compatible with React Native and works through firewalls
+            </Text>
           </View>
         </View>
 
-        <View style={styles.riceCookerContainer}>
-          <Image
-            source={require('../assets/rice-cooker.png')}
-            style={styles.riceCookerImage}
-            resizeMode="contain"
-          />
+        {/* App Settings */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>App Settings</Text>
+          
+          <View style={styles.settingItem}>
+            <View style={styles.settingInfo}>
+              <Text style={styles.settingLabel}>Push Notifications</Text>
+              <Text style={styles.settingDescription}>Receive cooking alerts</Text>
+            </View>
+            <Switch
+              value={notificationsEnabled}
+              onValueChange={setNotificationsEnabled}
+              trackColor={{ false: '#767577', true: '#178ea3' }}
+              thumbColor={notificationsEnabled ? '#ffffff' : '#f4f3f4'}
+            />
+          </View>
+
+          <View style={styles.settingItem}>
+            <View style={styles.settingInfo}>
+              <Text style={styles.settingLabel}>Dark Mode</Text>
+              <Text style={styles.settingDescription}>Use dark theme</Text>
+            </View>
+            <Switch
+              value={darkModeEnabled}
+              onValueChange={setDarkModeEnabled}
+              trackColor={{ false: '#767577', true: '#178ea3' }}
+              thumbColor={darkModeEnabled ? '#ffffff' : '#f4f3f4'}
+            />
+          </View>
+
+          <View style={styles.settingItem}>
+            <View style={styles.settingInfo}>
+              <Text style={styles.settingLabel}>Auto Connect</Text>
+              <Text style={styles.settingDescription}>Connect to MQTT automatically</Text>
+            </View>
+            <Switch
+              value={autoConnect}
+              onValueChange={setAutoConnect}
+              trackColor={{ false: '#767577', true: '#178ea3' }}
+              thumbColor={autoConnect ? '#ffffff' : '#f4f3f4'}
+            />
+          </View>
         </View>
 
-        {/* <View style={styles.modeToggleContainer}>
-          <TouchableOpacity 
-            style={[styles.modeButton, !isDarkMode && styles.activeMode]}
-            onPress={() => setIsDarkMode(false)}
-          >
-            <Text style={[styles.modeButtonText, !isDarkMode && styles.activeModeText]}>
-              Light Mode
-            </Text>
+        {/* About Section */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>About</Text>
+          
+          <TouchableOpacity style={styles.settingItem}>
+            <View style={styles.settingInfo}>
+              <Text style={styles.settingLabel}>Version</Text>
+              <Text style={styles.settingValue}>1.0.0</Text>
+            </View>
           </TouchableOpacity>
-          <TouchableOpacity 
-            style={[styles.modeButton, isDarkMode && styles.activeMode]}
-            onPress={() => setIsDarkMode(true)}
-          >
-            <Text style={[styles.modeButtonText, isDarkMode && styles.activeModeText]}>
-              Dark Mode
-            </Text>
-          </TouchableOpacity>
-        </View> */}
 
-        <TouchableOpacity 
-          style={styles.profileButton}
-          onPress={() => navigation.navigate('Profile')}
-        >
-          <Image
-            source={require('../assets/profile.png')}
-            style={styles.profileIcon}
-          />
-          <Text style={styles.profileButtonText}>Your Profile</Text>
-          <Text style={styles.arrowIcon}>→</Text>
-        </TouchableOpacity>
-      </ScrollView>
-      {/* <View style={styles.footer}>
+          <TouchableOpacity style={styles.settingItem}>
+            <View style={styles.settingInfo}>
+              <Text style={styles.settingLabel}>Terms of Service</Text>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.settingItem}>
+            <View style={styles.settingInfo}>
+              <Text style={styles.settingLabel}>Privacy Policy</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      <View style={styles.footer}>
         <TouchableOpacity onPress={() => navigation.navigate('TermsOfService')}>
           <Text style={styles.footerText}>Term of Service</Text>
         </TouchableOpacity>
@@ -114,7 +165,7 @@ const Settings = ({ navigation }) => {
         <TouchableOpacity onPress={() => navigation.navigate('ContactUs')}>
           <Text style={styles.footerText}>Contact Us</Text>
         </TouchableOpacity>
-      </View> */}
+      </View>
     </SafeAreaView>
   );
 };
@@ -135,27 +186,10 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
   },
-  searchContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    borderRadius: 20,
-    marginHorizontal: 10,
-    paddingHorizontal: 10,
-    height: 40,
-  },
-  searchIcon: {
-    width: 20,
-    height: 20,
-    tintColor: '#FFFFFF',
-    marginRight: 5,
-  },
-  searchInput: {
-    flex: 1,
+  headerTitle: {
     color: '#FFFFFF',
-    fontSize: 16,
-    padding: 0,
+    fontSize: 20,
+    fontWeight: 'bold',
   },
   menuIcon: {
     width: 24,
@@ -166,148 +200,68 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
   },
-  titleContainer: {
-    backgroundColor: '#178ea3',
-    padding: 15,
-    borderRadius: 25,
-    marginBottom: 30,
-    borderWidth: 0.9,
-    borderColor: '#096171',
-  },
-  title: {
-    color: '#FFFFFF',
-    fontSize: 20,
-    textAlign: 'center',
-    fontWeight: '600',
-  },
-  connectionSection: {
+  section: {
     marginBottom: 30,
   },
-  connectionText: {
-    fontSize: 16,
-    marginBottom: 10,
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#178ea3',
+    marginBottom: 15,
   },
-  connectedText: {
-    color: '#4CAF50',
-  },
-  serialInputContainer: {
+  settingItem: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
+    paddingVertical: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E0E0E0',
   },
-  serialInput: {
+  settingInfo: {
     flex: 1,
-    height: 44,
-    borderWidth: 1,
-    borderColor: '#E0E0E0',
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    marginRight: 10,
   },
-  connectButton: {
-    backgroundColor: '#178ea3',
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    borderRadius: 8,
-  },
-  connectButtonText: {
-    color: '#FFFFFF',
-    fontWeight: '600',
-  },
-  riceCookerContainer: {
-    alignItems: 'center',
-    marginVertical: 40,
-  },
-  riceCookerImage: {
-    width: 300,
-    height: 320,
-  },
-  modeToggleContainer: {
-    flexDirection: 'row',
-    backgroundColor: '#F5F5F5',
-    borderRadius: 25,
-    padding: 4,
-    marginBottom: 40,
-  },
-  modeButton: {
-    flex: 1,
-    paddingVertical: 10,
-    alignItems: 'center',
-    borderRadius: 20,
-  },
-  activeMode: {
-    backgroundColor: '#000000',
-  },
-  modeButtonText: {
+  settingLabel: {
     fontSize: 16,
+    color: '#333333',
+    fontWeight: '500',
+  },
+  settingDescription: {
+    fontSize: 14,
     color: '#666666',
+    marginTop: 2,
   },
-  activeModeText: {
-    color: '#FFFFFF',
+  settingValue: {
+    fontSize: 14,
+    color: '#178ea3',
+    marginTop: 2,
   },
-  profileButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#178ea3',
-    padding: 16,
-    borderRadius: 25,
-    marginBottom:50
-    
+
+  connectionInfo: {
+    backgroundColor: '#F5F5F5',
+    padding: 15,
+    borderRadius: 10,
+    marginTop: 10,
   },
-  profileIcon: {
-    width: 24,
-    height: 24,
-    tintColor: '#FFFFFF',
-    marginRight: 12,
+  connectionInfoText: {
+    fontSize: 14,
+    color: '#666666',
+    marginBottom: 5,
   },
-  profileButtonText: {
-    flex: 1,
-    color: '#FFFFFF',
-    fontSize: 16,
+  bold: {
     fontWeight: '600',
   },
-  arrowIcon: {
-    color: '#FFFFFF',
-    fontSize: 20,
-  },
-  searchContainer: {
-    flex: 1,
+  footer: {
     flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    borderRadius: 20,
-    marginHorizontal: 10,
-    paddingHorizontal: 10,
-    height: 40,
+    justifyContent: 'space-around',
+    padding: 20,
+    backgroundColor: '#096171',
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
   },
-  searchIcon: {
-    width: 20,
-    height: 20,
-    tintColor: '#FFFFFF',
-    marginRight: 5,
-  },
-  searchInput: {
-    flex: 1,
+  footerText: {
     color: '#FFFFFF',
-    fontSize: 16,
-    padding: 0,
+    fontSize: 14,
   },
-  menuIcon: {
-    width: 24,
-    height: 24,
-    tintColor: '#FFFFFF',
-  },
-//   footer: {
-//     flexDirection: 'row',
-//     justifyContent: 'space-around',
-//     padding: 20,
-//     backgroundColor: '#096171',
-//     borderTopLeftRadius: 16,
-//     borderTopRightRadius: 16,
-//   },
-//   footerText: {
-//     color: '#FFFFFF',
-//     fontSize: 14,
-//   },
 });
 
 export default Settings;
