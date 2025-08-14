@@ -67,19 +67,16 @@ Here are the key features from the app:
 
 ### **Splash Screen & Other Screenshots**
 
-<div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
+![Splash Screen](https://drive.google.com/uc?id=1XWyln2COa6d5VbxjXGZUNyIPjUaGrrW7)
+![Login](https://drive.google.com/uc?id=1pdVcPwKQCoL7gRWVoj9DinyldwlFbEj0)
+![Register](https://drive.google.com/uc?id=1M9e-O9xTxlrOEd0ucF9GSmbTnHmjEg79)
+![Machine Learning Confirmation](https://drive.google.com/uc?id=1c5Wq4camCW7diD_JoTY3Bk2en65dKjna)
 
-    <img src="https://drive.google.com/uc?id=1XWyln2COa6d5VbxjXGZUNyIPjUaGrrW7" alt="Splash Screen" width="200" height="200"/>
-    <img src="https://drive.google.com/uc?id=1pdVcPwKQCoL7gRWVoj9DinyldwlFbEj0" alt="Login" width="200" height="200"/>
-    <img src="https://drive.google.com/uc?id=1M9e-O9xTxlrOEd0ucF9GSmbTnHmjEg79" alt="Register" width="200" height="200"/>
-    <img src="https://drive.google.com/uc?id=1c5Wq4camCW7diD_JoTY3Bk2en65dKjna" alt="Machine Learning Confirmation" width="200" height="200"/>
+![Settings Page](https://drive.google.com/uc?id=1CJd_roAxHn2Q5WDP5sWHMcVHO4QMi1e7)
+![Home Screen](https://drive.google.com/uc?id=1A9jMvuWLyoNkeSD0Vuv3qpSc75iN5d4s)
+![Welcome Page](https://drive.google.com/uc?id=1Zaq3tBgEE6mu1GvBy2OgH-VaTnARKvi8)
+![Hardware Status](https://drive.google.com/uc?id=1XCNHvRhCr-L60Fl3VtaLFVEaWRU_-jDE)
 
-    <img src="https://drive.google.com/uc?id=1CJd_roAxHn2Q5WDP5sWHMcVHO4QMi1e7" alt="Settings Page" width="200" height="200"/>
-    <img src="https://drive.google.com/uc?id=1A9jMvuWLyoNkeSD0Vuv3qpSc75iN5d4s" alt="Home Screen" width="200" height="200"/>
-    <img src="https://drive.google.com/uc?id=1Zaq3tBgEE6mu1GvBy2OgH-VaTnARKvi8" alt="Welcome Page" width="200" height="200"/>
-    <img src="https://drive.google.com/uc?id=1XCNHvRhCr-L60Fl3VtaLFVEaWRU_-jDE" alt="Hardware Status" width="200" height="200"/>
-
-</div>
 
 ## Troubleshooting
 
