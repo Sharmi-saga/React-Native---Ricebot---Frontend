@@ -36,7 +36,7 @@ Here are the key features from the app:
 
 ## Troubleshooting
 
-If you encounter issues, refer to the [Troubleshooting section](https://reactnative.dev/docs/troubleshooting) for solutions.
+If you encounter issues, Contact me for solutions.
 
 ---
 
@@ -51,6 +51,49 @@ If you encounter issues, refer to the [Troubleshooting section](https://reactnat
 ## Learn More 📚
 
 - [React Native Website](https://reactnative.dev)
+- ## Getting Started
+
+### Step 1: Start Metro
+
+Run the following command to start **Metro**, the JavaScript build tool for React Native:
+
+```sh
+# Using npm
+npm start
+
+# OR using Yarn
+yarn start
+```
+
+### Step 2: Build and Run Your App
+
+With Metro running, open a new terminal window and use the following commands:
+
+#### Android
+
+```sh
+# Using npm
+npm run android
+
+# OR using Yarn
+yarn android
+```
+
+#### iOS
+
+```sh
+# Using npm
+npm run ios
+
+# OR using Yarn
+yarn ios
+```
+
+### Step 3: Modify Your App
+
+Make changes to the app by editing `App.tsx`. The app will automatically update with **Fast Refresh** when changes are saved.
+
+---
 
 ---
 
