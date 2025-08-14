@@ -66,7 +66,7 @@ The **Intelligent Automated Rice Cooker** automates the rice cooking process by 
 Here are key features from the app:
 
 ### **Home Screen**
-![Home Screen](./assets/screenshots/home-screen.png)
+![Profile Screen](./src/assets/Screenshots/profile%20page.png)
 
 ### **Start Cooking Screen**
 ![Start Cooking](./assets/screenshots/start-cooking.png)
