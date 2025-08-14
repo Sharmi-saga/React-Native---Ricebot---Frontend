@@ -79,21 +79,6 @@ npm run android
 yarn android
 ```
 
-#### iOS
-
-```sh
-# Using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
-```
-
-### Step 3: Modify Your App
-
-Make changes to the app by editing `App.tsx`. The app will automatically update with **Fast Refresh** when changes are saved.
-
----
 
 ## License 📄
 
