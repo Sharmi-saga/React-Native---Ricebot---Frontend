@@ -12,7 +12,7 @@ The **Intelligent Automated Rice Cooker** automates the rice cooking process by 
 
 ### Features
 
-- **Remote control**: Start, stop, and monitor cooking remotely.
+- **Remote control**: Start, stop, and monitor cooking remotely.(Used Node.Js for backend , ESP32-S3 for Ardiuno)
 - **Machine learning**: Learns user preferences for rice quantity and cooking times.
 - **Real-time notifications**: Sends alerts about cooking status, including when cooking is complete.
 
@@ -92,8 +92,6 @@ yarn ios
 ### Step 3: Modify Your App
 
 Make changes to the app by editing `App.tsx`. The app will automatically update with **Fast Refresh** when changes are saved.
-
----
 
 ---
 
