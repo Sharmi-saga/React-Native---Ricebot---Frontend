@@ -48,10 +48,7 @@ If you encounter issues, Contact me for solutions.
 
 ---
 
-## Learn More 📚
-
-- [React Native Website](https://reactnative.dev)
-- ## Getting Started
+## Getting Started
 
 ### Step 1: Start Metro
 
