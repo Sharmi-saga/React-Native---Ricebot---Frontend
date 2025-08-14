@@ -29,31 +29,28 @@ const TermsOfService = ({ navigation }) => {
       </View>
 
       <ScrollView style={styles.content}>
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>Term of Service</Text>
-        </View>
+       <View style={styles.termsContainer}>
+  <Text style={styles.sectionTitle}>1. Acceptance of Terms</Text>
+  <Text style={styles.termsText}>
+    By using this app, users agree to comply with these Terms and Conditions. If you do not agree to these terms, do not use the app.
+  </Text>
 
-        <View style={styles.termsContainer}>
-          <Text style={styles.sectionTitle}>1. Acceptance of Terms</Text>
-          <Text style={styles.termsText}>
-            By accessing or using the IoT services provided by [Your Company Name], you agree to be bound by these Terms and Conditions and our Privacy Policy. If you do not agree with these terms, you must not use our services.
-          </Text>
+  <Text style={styles.sectionTitle}>2. Services Provided</Text>
+  <Text style={styles.termsText}>
+    Ricebot offers a variety of services, including remote monitoring, control, and interaction with IoT devices through our platform. These devices may include smart home appliances, kitchen automation systems, and other IoT-enabled devices.
+  </Text>
 
-          <Text style={styles.sectionTitle}>2. Services Provided</Text>
-          <Text style={styles.termsText}>
-            [Your Company Name] offers a variety of IoT services that enable users to remotely monitor, control, and interact with devices through our platform. These devices include [list the types of devices, e.g., smart home devices, industrial IoT devices, etc.].
-          </Text>
+  <Text style={styles.sectionTitle}>3. Eligibility</Text>
+  <Text style={styles.termsText}>
+    To use our services, you must be at least 18 years of age or the legal age of majority in your jurisdiction. By agreeing to these terms, you confirm that you are eligible to use the services.
+  </Text>
 
-          <Text style={styles.sectionTitle}>3. Eligibility</Text>
-          <Text style={styles.termsText}>
-            To use our IoT services, you must be at least 18 years of age or the legal age of majority in your jurisdiction. By agreeing to these terms, you confirm that you are eligible to use the services.
-          </Text>
+  <Text style={styles.sectionTitle}>4. Account Registration</Text>
+  <Text style={styles.termsText}>
+    To access certain features of the app, you may be required to create an account. You agree to provide accurate and complete information during the registration process and keep your account details updated. You are responsible for maintaining the confidentiality of your login credentials and for all activities conducted under your account.
+  </Text>
+</View>
 
-          <Text style={styles.sectionTitle}>4. Account Registration</Text>
-          <Text style={styles.termsText}>
-            To access certain features of our IoT services, you may be required to register an account. You must provide accurate and complete information during the registration process and maintain the accuracy of your account information. You are responsible for safeguarding your login credentials and for all activities under your account.
-          </Text>
-        </View>
       </ScrollView>
 
       <View style={styles.footer}>

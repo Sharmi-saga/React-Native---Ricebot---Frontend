@@ -29,31 +29,29 @@ const PrivacyPolicy = ({ navigation }) => {
       </View>
 
       <ScrollView style={styles.content}>
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>Privacy Policy</Text>
-        </View>
 
-        <View style={styles.policyContainer}>
-          <Text style={styles.sectionTitle}>1. Information We Collect</Text>
-          <Text style={styles.policyText}>
-            By accessing and using [Your Company Name] IoT services, you agree to comply with and be bound by the following terms and conditions. Please read them carefully.
-          </Text>
+       <View style={styles.policyContainer}>
+  <Text style={styles.sectionTitle}>1. Information We Collect</Text>
+  <Text style={styles.policyText}>
+    We collect personal information such as name, email address, device data, and usage information when you access and use the app. This data is essential for providing and improving the services we offer.
+  </Text>
 
-          <Text style={styles.sectionTitle}>2. How We Use Your Information</Text>
-          <Text style={styles.policyText}>
-            By accessing or using the IoT services provided by [Your Company Name], you agree to be bound by these Terms and Conditions and our Privacy Policy. If you do not agree with these terms, you must not use our services.
-          </Text>
+  <Text style={styles.sectionTitle}>2. How We Use Your Information</Text>
+  <Text style={styles.policyText}>
+    The information we collect is used to provide you with the best experience possible. It helps us optimize app performance, enhance functionality, personalize user experiences, and communicate important updates. We may also use this data to send you notifications or promotional offers that align with your preferences.
+  </Text>
 
-          <Text style={styles.sectionTitle}>3. Data Security</Text>
-          <Text style={styles.policyText}>
-            [Your Company Name] offers a variety of IoT services that enable users to remotely monitor, control, and interact with devices through our platform. These devices include [list the types of devices, e.g., smart home devices, industrial IoT devices, etc.].
-          </Text>
+  <Text style={styles.sectionTitle}>3. Data Security</Text>
+  <Text style={styles.policyText}>
+    We implement standard security measures to protect your personal information. However, please note that no method of electronic transmission or storage is 100% secure. While we strive to protect your data, we cannot guarantee its absolute security.
+  </Text>
 
-          <Text style={styles.sectionTitle}>4. Your Rights</Text>
-          <Text style={styles.policyText}>
-            To access certain features of our IoT services, you may be required to register an account. You must provide accurate and complete information during the registration process and maintain the accuracy of your account information. You are responsible for safeguarding your login credentials and for all activities under your account.
-          </Text>
-        </View>
+  <Text style={styles.sectionTitle}>4. Your Rights</Text>
+  <Text style={styles.policyText}>
+    You have the right to access, correct, or delete your personal data. If you wish to exercise these rights, please contact us. Additionally, you can manage your notification preferences and opt-out of marketing communications at any time.
+  </Text>
+</View>
+
       </ScrollView>
 
       <View style={styles.footer}>
